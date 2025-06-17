@@ -36,8 +36,7 @@ export default {
     };
   },
   async created() {
-    const baseUrl = import.meta.env.BASE_URL;
-    const res = await axios.get(`${baseUrl}data/index.json`);
+    const res = await axios.get('data/index.json');
     this.index = res.data;
   },
   methods: {
