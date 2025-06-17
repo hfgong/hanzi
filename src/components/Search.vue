@@ -86,7 +86,7 @@ html {
 
 @media (max-width: 599px) {
   .search-container {
-    max-width: 400px;
+    max-width: 420px;
     width: 95vw;
   }
 }
@@ -101,12 +101,13 @@ html {
 @media (min-width: 600px) {
   .search-box {
     flex-direction: row;
+    align-items: center;
   }
 }
 
 input {
-  padding: 12px;
-  font-size: 1rem;
+  padding: 16px;
+  font-size: 18px;
   border: 1px solid #ccc;
   border-radius: 10px;
   width: 100%;
@@ -114,8 +115,8 @@ input {
 }
 
 button {
-  padding: 12px 24px;
-  font-size: 1rem;
+  padding: 16px;
+  font-size: 18px;
   background-color: #2c3e50;
   color: white;
   border: none;
@@ -123,6 +124,14 @@ button {
   cursor: pointer;
   transition: background 0.3s;
   white-space: nowrap;
+  width: 100%;
+}
+
+@media (min-width: 600px) {
+  button {
+    width: auto;
+    padding: 16px 32px;
+  }
 }
 
 button:hover {
@@ -139,7 +148,7 @@ button:hover {
 }
 
 .main-char {
-  font-size: 3.5rem;
+  font-size: 4rem;
   margin-bottom: 1rem;
 }
 
