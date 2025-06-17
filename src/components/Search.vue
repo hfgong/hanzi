@@ -64,12 +64,20 @@ export default {
   padding: 2.5rem;
   box-shadow: 0 8px 20px rgba(0,0,0,0.1);
   border-radius: 16px;
+  margin: 0 auto;
 }
 
 .search-box {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   margin-bottom: 2rem;
+}
+
+@media (min-width: 600px) {
+  .search-box {
+    flex-direction: row;
+  }
 }
 
 input {
@@ -77,8 +85,16 @@ input {
   font-size: 1.2rem;
   border: 1px solid #ccc;
   border-radius: 10px;
-  width: 65%;
-  margin-right: 12px;
+  width: 90%;
+  margin-bottom: 12px;
+}
+
+@media (min-width: 600px) {
+  input {
+    width: 65%;
+    margin-bottom: 0;
+    margin-right: 12px;
+  }
 }
 
 button {
@@ -129,6 +145,7 @@ button:hover {
   flex-wrap: wrap;
   gap: 12px;
   margin-top: 1rem;
+  justify-content: center;
 }
 
 .char-item {
