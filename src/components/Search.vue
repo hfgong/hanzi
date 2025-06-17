@@ -1,3 +1,4 @@
+// src/components/Search.vue
 <template>
   <div class="search-container">
     <div class="search-box">
@@ -58,13 +59,21 @@ export default {
 
 <style scoped>
 .search-container {
-  max-width: 900px;
+  max-width: 600px;
   width: 100%;
   background: white;
-  padding: 2.5rem;
+  padding: 1.5rem;
   box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-  border-radius: 16px;
-  margin: 0 auto;
+  border-radius: 12px;
+  margin: 1rem auto;
+}
+
+@media (min-width: 600px) {
+  .search-container {
+    max-width: 900px;
+    padding: 2.5rem;
+    border-radius: 16px;
+  }
 }
 
 .search-box {
@@ -122,13 +131,25 @@ button:hover {
 }
 
 .main-char {
-  font-size: 5rem;
+  font-size: 4rem;
   margin-bottom: 1rem;
+}
+
+@media (min-width: 600px) {
+  .main-char {
+    font-size: 5rem;
+  }
 }
 
 .details {
   text-align: left;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
+}
+
+@media (min-width: 600px) {
+  .details {
+    font-size: 1.2rem;
+  }
 }
 
 .label {
