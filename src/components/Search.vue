@@ -59,19 +59,18 @@ export default {
 
 <style scoped>
 .search-container {
-  max-width: 600px;
-  width: 100%;
+  width: 90vw;
   background: white;
-  padding: 1.5rem;
+  padding: 1rem;
   box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-  border-radius: 12px;
+  border-radius: 10px;
   margin: 1rem auto;
 }
 
 @media (min-width: 600px) {
   .search-container {
     max-width: 900px;
-    padding: 2.5rem;
+    padding: 2rem;
     border-radius: 16px;
   }
 }
@@ -79,13 +78,15 @@ export default {
 .search-box {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
+  gap: 12px;
   margin-bottom: 2rem;
 }
 
 @media (min-width: 600px) {
   .search-box {
     flex-direction: row;
+    align-items: center;
   }
 }
 
@@ -94,16 +95,7 @@ input {
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 10px;
-  width: 90%;
-  margin-bottom: 12px;
-}
-
-@media (min-width: 600px) {
-  input {
-    width: 65%;
-    margin-bottom: 0;
-    margin-right: 12px;
-  }
+  flex: 1;
 }
 
 button {
@@ -115,6 +107,7 @@ button {
   border-radius: 10px;
   cursor: pointer;
   transition: background 0.3s;
+  white-space: nowrap;
 }
 
 button:hover {
