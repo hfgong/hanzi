@@ -5,7 +5,10 @@
     </header>
     <main class="container">
       <Search v-if="ready" />
-      <div v-else class="loading">正在加载字典数据...</div>
+      <div v-else class="loading">
+        <p>正在加载字典数据...</p>
+        <p v-if="error" style="color:red;">数据加载失败: {{ error }}</p>
+      </div>
     </main>
   </div>
 </template>
@@ -21,22 +24,25 @@ export default {
   setup() {
     const indexData = ref({});
     const ready = ref(false);
-    
+    const error = ref("");
+
     provide('indexData', indexData);
 
     onMounted(async () => {
       try {
         const path = `${import.meta.env.BASE_URL}data/index.json`;
-        console.log('Loading index.json from:', path);
+        console.log('[调试] 正在请求:', path);
         const res = await axios.get(path);
         indexData.value = res.data;
         ready.value = true;
+        console.log('[调试] index.json 加载成功，共加载汉字数量:', Object.keys(res.data).length);
       } catch (err) {
-        console.error('Failed to load data/index.json:', err);
+        console.error('[调试] index.json 加载失败:', err);
+        error.value = err.message;
       }
     });
 
-    return { ready };
+    return { ready, error };
   }
 };
 </script>
@@ -68,5 +74,6 @@ header {
 .loading {
   font-size: 1.2rem;
   color: #555;
+  text-align: center;
 }
 </style>
