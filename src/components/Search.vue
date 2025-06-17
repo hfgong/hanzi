@@ -42,8 +42,16 @@ export default {
     };
   },
   async created() {
-    const res = await axios.get('data/index.json');
-    this.index = res.data;
+    try {
+      console.log('Current page URL:', window.location.href);
+      const requestPath = 'data/index.json';
+      console.log('Attempting to load JSON from:', requestPath);
+      const res = await axios.get(requestPath);
+      console.log('Successfully loaded index.json:', res);
+      this.index = res.data;
+    } catch (error) {
+      console.error('Error loading data/index.json:', error);
+    }
   },
   methods: {
     search() {
