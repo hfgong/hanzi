@@ -82,7 +82,7 @@ export default {
 
 input {
   padding: 12px;
-  font-size: 1.2rem;
+  font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 10px;
   width: 90%;
@@ -99,7 +99,7 @@ input {
 
 button {
   padding: 12px 24px;
-  font-size: 1.2rem;
+  font-size: 16px;
   background-color: #2c3e50;
   color: white;
   border: none;
