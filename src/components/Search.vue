@@ -21,6 +21,10 @@
         <span v-for="item in componentResults" :key="item" class="char-item" @click="selectChar(item)">{{ item }}</span>
       </div>
     </div>
+
+    <div class="version-info">
+      版本: {{ commitId }}
+    </div>
   </div>
 </template>
 
@@ -33,7 +37,8 @@ export default {
       query: '',
       index: {},
       result: null,
-      componentResults: []
+      componentResults: [],
+      commitId: __COMMIT_ID__ // 通过 Vite 在构建时注入
     };
   },
   async created() {
@@ -174,5 +179,12 @@ button:hover {
 .char-item:hover {
   transform: scale(1.1);
   background: #b0c4de;
+}
+
+.version-info {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.8rem;
+  color: #888;
 }
 </style>

@@ -1,6 +1,10 @@
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import { VitePWA } from 'vite-plugin-pwa';
+import { execSync } from 'child_process';
+
+// 自动获取当前 Git commit ID
+const commitId = execSync('git rev-parse --short HEAD').toString().trim();
 
 export default defineConfig({
   base: '/hanzi/',  // 仓库路径
@@ -22,5 +26,10 @@ export default defineConfig({
       }
     })
   ],
-  build: { outDir: 'dist' }
+  build: { outDir: 'dist' },
+
+  // 核心：在构建时注入全局常量 __COMMIT_ID__
+  define: {
+    __COMMIT_ID__: JSON.stringify(commitId)
+  }
 });
