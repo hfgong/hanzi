@@ -17,7 +17,7 @@
     <div v-if="componentResults.length" class="reverse-lookup">
       <h3>包含此部件的漢字</h3>
       <div class="char-grid">
-        <span v-for="item in componentResults" :key="item" class="char-item">{{ item }}</span>
+        <span v-for="item in componentResults" :key="item" class="char-item" @click="selectChar(item)">{{ item }}</span>
       </div>
     </div>
   </div>
@@ -47,6 +47,10 @@ export default {
         const item = this.index[ch];
         return item.decomposition.includes(q);
       });
+    },
+    selectChar(char) {
+      this.query = char;
+      this.search();
     }
   }
 };
