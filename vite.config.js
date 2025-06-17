@@ -3,7 +3,7 @@ import vue from '@vitejs/plugin-vue';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
-  base: '/hanzi/',  // 🚩 这里非常关键！仓库名路径，前后都有斜杠
+  base: '/hanzi/',  // 仓库路径
   plugins: [
     vue(),
     VitePWA({
@@ -16,21 +16,11 @@ export default defineConfig({
         background_color: '#ffffff',
         theme_color: '#2c3e50',
         icons: [
-          {
-            src: '/hanzi/icon-192.png',
-            sizes: '192x192',
-            type: 'image/png'
-          },
-          {
-            src: '/hanzi/icon-512.png',
-            sizes: '512x512',
-            type: 'image/png'
-          }
+          { src: '/hanzi/icon-192.png', sizes: '192x192', type: 'image/png' },
+          { src: '/hanzi/icon-512.png', sizes: '512x512', type: 'image/png' }
         ]
       }
     })
   ],
-  build: {
-    outDir: 'dist'
-  }
+  build: { outDir: 'dist' }
 });
