@@ -1,0 +1,21 @@
+{
+  "name": "hanzi",
+  "version": "1.0.0",
+  "description": "漢字部件拆分字典",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "axios": "^1.4.0",
+    "pinia": "^2.1.3",
+    "pinyin-pro": "^3.7.0",
+    "rollup": "^3.29.4",
+    "vue": "^3.4.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.5.0",
+    "vite": "^5.0.0"
+  }
+}
