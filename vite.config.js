@@ -3,7 +3,7 @@ import vue from '@vitejs/plugin-vue';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
-  base: '/hanzi/',  // 注意：必须是你的仓库名
+  base: '/hanzi/',  // 🚩 这里非常关键！仓库名路径，前后都有斜杠
   plugins: [
     vue(),
     VitePWA({
@@ -11,7 +11,7 @@ export default defineConfig({
       manifest: {
         name: '漢字部件字典',
         short_name: 'HanziDict',
-        start_url: '/hanzi/',  // PWA 这里也最好写全路径
+        start_url: '/hanzi/',
         display: 'standalone',
         background_color: '#ffffff',
         theme_color: '#2c3e50',
