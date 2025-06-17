@@ -1,11 +1,43 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+  <meta charset="UTF-8">
   <title>漢字部件字典</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="app"></div>
+  <header>
+    <h1>漢字部件字典</h1>
+  </header>
+
+  <main class="container">
+    <div class="search-container">
+      <div class="search-box">
+        <input id="searchInput" type="text" placeholder="輸入漢字或部件">
+        <button onclick="search()">查詢</button>
+      </div>
+
+      <div id="resultContainer" class="result-card" style="display:none;">
+        <h2 id="char" class="main-char"></h2>
+        <div class="details">
+          <p><span class="label">拼音：</span> <span id="pinyin"></span></p>
+          <p><span class="label">釋義：</span> <span id="definition"></span></p>
+          <p><span class="label">部件拆分：</span> <span id="decomposition"></span></p>
+        </div>
+      </div>
+
+      <div id="componentsContainer" class="reverse-lookup" style="display:none;">
+        <h3>包含此部件的漢字</h3>
+        <div id="componentsList" class="char-grid"></div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="version-info">
+    版本: 純前端版
+  </footer>
+
+  <script src="app.js"></script>
 </body>
 </html>
