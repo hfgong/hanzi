@@ -38,7 +38,7 @@ export default {
       index: {},
       result: null,
       componentResults: [],
-      commitId: __COMMIT_ID__ // 通过 Vite 在构建时注入
+      commitId: __COMMIT_ID__
     };
   },
   async created() {
@@ -63,13 +63,17 @@ export default {
 </script>
 
 <style scoped>
+html {
+  font-size: 18px;
+}
+
 .search-container {
-  width: 90vw;
   background: white;
   padding: 1rem;
   box-shadow: 0 8px 20px rgba(0,0,0,0.1);
   border-radius: 10px;
   margin: 1rem auto;
+  max-width: 95vw;
 }
 
 @media (min-width: 600px) {
@@ -80,10 +84,16 @@ export default {
   }
 }
 
+@media (max-width: 599px) {
+  .search-container {
+    max-width: 400px;
+    width: 95vw;
+  }
+}
+
 .search-box {
   display: flex;
   flex-direction: column;
-  align-items: stretch;
   gap: 12px;
   margin-bottom: 2rem;
 }
@@ -91,21 +101,21 @@ export default {
 @media (min-width: 600px) {
   .search-box {
     flex-direction: row;
-    align-items: center;
   }
 }
 
 input {
   padding: 12px;
-  font-size: 16px;
+  font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 10px;
-  flex: 1;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 button {
   padding: 12px 24px;
-  font-size: 16px;
+  font-size: 1rem;
   background-color: #2c3e50;
   color: white;
   border: none;
@@ -129,7 +139,7 @@ button:hover {
 }
 
 .main-char {
-  font-size: 4rem;
+  font-size: 3.5rem;
   margin-bottom: 1rem;
 }
 
@@ -141,7 +151,7 @@ button:hover {
 
 .details {
   text-align: left;
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
 @media (min-width: 600px) {
