@@ -29,36 +29,22 @@
 </template>
 
 <script>
-import axios from 'axios';
-
 export default {
+  inject: ['indexData'],
   data() {
     return {
       query: '',
-      index: {},
       result: null,
       componentResults: [],
       commitId: __COMMIT_ID__
     };
   },
-  async created() {
-    try {
-      console.log('Current page URL:', window.location.href);
-      const requestPath = 'data/index.json';
-      console.log('Attempting to load JSON from:', requestPath);
-      const res = await axios.get(requestPath);
-      console.log('Successfully loaded index.json:', res);
-      this.index = res.data;
-    } catch (error) {
-      console.error('Error loading data/index.json:', error);
-    }
-  },
   methods: {
     search() {
       const q = this.query.trim();
-      this.result = this.index[q] || null;
-      this.componentResults = Object.keys(this.index).filter(ch => {
-        const item = this.index[ch];
+      this.result = this.indexData[q] || null;
+      this.componentResults = Object.keys(this.indexData).filter(ch => {
+        const item = this.indexData[ch];
         return item.decomposition.includes(q);
       });
     },
