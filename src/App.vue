@@ -31,11 +31,12 @@ export default {
     onMounted(async () => {
       try {
         const path = `${import.meta.env.BASE_URL}data/index.json`;
-        console.log('[调试] 正在请求:', path);
+        console.log('[调试] BASE_URL:', import.meta.env.BASE_URL);
+        console.log('[调试] 请求路径:', path);
         const res = await axios.get(path);
         indexData.value = res.data;
         ready.value = true;
-        console.log('[调试] index.json 加载成功，共加载汉字数量:', Object.keys(res.data).length);
+        console.log('[调试] index.json 加载成功: 共', Object.keys(res.data).length, '条数据');
       } catch (err) {
         console.error('[调试] index.json 加载失败:', err);
         error.value = err.message;
