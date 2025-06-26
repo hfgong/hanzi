@@ -20,6 +20,12 @@ function search() {
   const query = document.getElementById('searchInput').value.trim();
   const simplifiedQuery = tradToSimp(query);
   const result = indexData[simplifiedQuery];
+  if (!query) {
+    document.getElementById('resultContainer').style.display = 'none';
+    document.getElementById('componentsContainer').style.display = 'none';
+    return;
+  }
+  const result = indexData[query];
 
   // 处理单字查询
   if (result) {
