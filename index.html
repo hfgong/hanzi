@@ -13,6 +13,18 @@
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="stylesheet" href="style.css">
   <script defer src="app.js"></script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      // Reload once when an updated service worker takes over (not on first install).
+      if (navigator.serviceWorker.controller) {
+        let reloaded = false;
+        navigator.serviceWorker.addEventListener("controllerchange", () => {
+          if (!reloaded) { reloaded = true; location.reload(); }
+        });
+      }
+      navigator.serviceWorker.register("./sw.js");
+    }
+  </script>
 </head>
 <body>
   <header>
@@ -37,7 +49,7 @@
     <dl class="details">
       <div><dt>拼音</dt><dd id="pinyin"></dd></div>
       <div><dt>釋義</dt><dd id="definition"></dd></div>
-      <div><dt>部件</dt><dd id="decomposition"></dd></div>
+      <div id="decompositionRow"><dt>部件</dt><dd id="decomposition"></dd></div>
     </dl>
   </section>
 
@@ -48,9 +60,9 @@
   </section>
 
   <footer>
-    數據來源：<a href="https://cc-cedict.org/wiki/">CC-CEDICT</a>（CC BY-SA 3.0）·
-    <a href="https://github.com/skishore/makemeahanzi">Make Me a Hanzi</a> ·
-    <a href="https://github.com/cjkvi/cjkvi-ids">CHISE IDS</a>
+    數據來源：<a href="https://cc-cedict.org/wiki/">CC-CEDICT</a>（CC BY-SA 4.0）·
+    <a href="https://github.com/skishore/makemeahanzi">Make Me a Hanzi</a>（LGPL-3.0）·
+    <a href="https://github.com/hfgong/hanzi/blob/main/data/README.md">授權說明</a>
   </footer>
 </body>
 </html>
