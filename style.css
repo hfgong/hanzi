@@ -87,6 +87,24 @@ header {
   user-select: none;
 }
 
+.header-actions { display: flex; gap: 6px; }
+
+.btn-top {
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  border-radius: var(--radius-md);
+  padding: 6px 10px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  min-height: 32px;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+.btn-top:active { transform: scale(0.95); background: var(--surface-active); }
+
 /* Cards */
 .card {
   background: var(--surface-color);
@@ -239,3 +257,26 @@ footer a { color: inherit; }
 .reading-pinyin { font-weight: 700; color: var(--primary-text); }
 .reading ol { padding-left: 1.4em; }
 .reading li::marker { color: var(--text-secondary); font-size: 0.85em; }
+
+/* Radical table */
+.radicals .char-grid { grid-template-columns: repeat(auto-fill, minmax(44px, 1fr)); }
+.radicals .char-item { height: 44px; min-width: 0; font-size: 1.35rem; }
+
+.all-radicals { margin-top: 12px; border-top: 1px dashed var(--border-color); padding-top: 10px; }
+.all-radicals summary {
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--primary-text);
+  padding: 2px 0;
+}
+.stroke-group { display: flex; gap: 8px; margin-top: 10px; }
+.stroke-group > span {
+  flex-shrink: 0;
+  width: 2.6em;
+  padding-top: 12px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+.stroke-group .char-grid { flex: 1; min-width: 0; }
