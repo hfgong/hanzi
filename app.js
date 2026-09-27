@@ -2,39 +2,97 @@ let indexData = {};
 let t2sMap = {};
 let s2tMap = {};
 
-window.onload = async () => {
+const $ = id => document.getElementById(id);
+const IDS_OPERATORS = /[⿰-⿿]/;
+
+document.addEventListener('DOMContentLoaded', async () => {
+  $('searchForm').addEventListener('submit', e => {
+    e.preventDefault();
+    search();
+  });
+
+  $('searchBtn').disabled = true;
   try {
-    const res = await fetch('data/index.json');
-    indexData = await res.json();
-    const t2sRes = await fetch('data/t2s.json');
-    t2sMap = await t2sRes.json();
-    const s2tRes = await fetch('data/s2t.json');
-    s2tMap = await s2tRes.json();
+    const load = url => fetch(url).then(res => {
+      if (!res.ok) throw new Error(`${url}: HTTP ${res.status}`);
+      return res.json();
+    });
+    [indexData, t2sMap, s2tMap] = await Promise.all([
+      load('data/index.json'), load('data/t2s.json'), load('data/s2t.json')
+    ]);
+    $('status').textContent = '';
     console.log("字典数据加载成功，共加载", Object.keys(indexData).length, "个汉字");
   } catch (err) {
-    alert("数据加载失败：" + err);
+    $('status').textContent = `⚠️ 數據載入失敗：${err.message}`;
+    $('status').classList.add('error');
+    return;
+  } finally {
+    $('searchBtn').disabled = false;
   }
-};
+  if ($('searchInput').value.trim()) search();
+});
+
+function lookup(ch) {
+  $('searchInput').value = ch;
+  search();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function charChip(ch) {
+  const span = document.createElement('span');
+  span.textContent = ch;
+  span.className = 'char-item';
+  span.addEventListener('click', () => lookup(ch));
+  return span;
+}
+
+// Show IDS operators (⿰, ⿱ …) and unknown parts (？) as plain text, components as tappable chips.
+function renderDecomposition(decomposition) {
+  const el = $('decomposition');
+  el.replaceChildren();
+  if (!decomposition) {
+    el.textContent = '—';
+    return;
+  }
+  const wrap = document.createElement('div');
+  wrap.className = 'decomp';
+  for (const ch of Array.from(decomposition)) {
+    if (IDS_OPERATORS.test(ch) || ch === '？' || ch === '?') {
+      const span = document.createElement('span');
+      span.className = 'ids';
+      span.textContent = ch;
+      wrap.appendChild(span);
+    } else {
+      wrap.appendChild(charChip(ch));
+    }
+  }
+  el.appendChild(wrap);
+}
 
 function search() {
-  const query = document.getElementById('searchInput').value.trim();
+  const query = $('searchInput').value.trim();
   const simplifiedQuery = tradToSimp(query);
   const result = indexData[simplifiedQuery];
+  $('status').classList.remove('error');
   if (!simplifiedQuery) {
-    document.getElementById('resultContainer').style.display = 'none';
-    document.getElementById('componentsContainer').style.display = 'none';
+    $('resultContainer').hidden = true;
+    $('componentsContainer').hidden = true;
+    $('status').textContent = '';
     return;
   }
 
   // 处理单字查询
   if (result) {
-    document.getElementById('resultContainer').style.display = 'block';
-    document.getElementById('char').innerText = buildCharDisplay(query, simplifiedQuery);
-    document.getElementById('pinyin').innerText = result.pinyin;
-    document.getElementById('definition').innerText = result.definition;
-    document.getElementById('decomposition').innerText = result.decomposition;
+    $('resultContainer').hidden = false;
+    const [main, variant] = buildCharDisplay(query, simplifiedQuery);
+    const small = document.createElement('small');
+    small.textContent = variant;
+    $('char').replaceChildren(main, ...(variant ? [small] : []));
+    $('pinyin').textContent = result.pinyin;
+    $('definition').textContent = result.definition;
+    renderDecomposition(result.decomposition);
   } else {
-    document.getElementById('resultContainer').style.display = 'none';
+    $('resultContainer').hidden = true;
   }
 
   // 处理部件反向查询
@@ -42,42 +100,27 @@ function search() {
     return indexData[ch].decomposition.includes(simplifiedQuery);
   });
 
-  const componentsContainer = document.getElementById('componentsContainer');
-  const componentsList = document.getElementById('componentsList');
-  componentsList.innerHTML = '';
+  $('componentsList').replaceChildren(...components.map(charChip));
+  $('componentsCount').textContent = components.length ? `（${components.length}）` : '';
+  $('componentsContainer').hidden = !components.length;
 
-  if (components.length) {
-    components.forEach(ch => {
-      const span = document.createElement('span');
-      span.innerText = ch;
-      span.className = 'char-item';
-      span.onclick = () => {
-        document.getElementById('searchInput').value = ch;
-        search();
-      };
-      componentsList.appendChild(span);
-    });
-    componentsContainer.style.display = 'block';
-  } else {
-    componentsContainer.style.display = 'none';
-  }
+  $('status').textContent = !result && !components.length ? `找不到「${query}」` : '';
 }
 
 function tradToSimp(str) {
   return Array.from(str).map(ch => t2sMap[ch] || ch).join('');
 }
 
+// Returns [main text, variant text or ''] for the result heading.
 function buildCharDisplay(original, simplified) {
   if (original === simplified) {
     // simplified input, show traditional variants
     const tradForms = Array.from(simplified)
       .map(ch => (s2tMap[ch] ? s2tMap[ch].join('') : ch))
       .join('');
-    return tradForms && tradForms !== simplified
-      ? `${simplified} (${tradForms})`
-      : simplified;
+    return tradForms && tradForms !== simplified ? [simplified, `繁 ${tradForms}`] : [simplified, ''];
   } else {
     // traditional input
-    return `${original} (${simplified})`;
+    return [original, `簡 ${simplified}`];
   }
 }

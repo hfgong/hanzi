@@ -1,43 +1,56 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
   <title>漢字部件字典</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="離線漢字字典：拼音、釋義、部件拆分與反向部件查詢，支援簡繁體">
+  <meta name="theme-color" content="#f8fafc" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#090d16" media="(prefers-color-scheme: dark)">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="stylesheet" href="style.css">
+  <script defer src="app.js"></script>
 </head>
 <body>
   <header>
-    <h1>漢字部件字典</h1>
+    <div class="brand">
+      <img class="brand-logo" src="icon.svg" alt="" width="26" height="26">
+      <span>漢字部件字典</span>
+    </div>
   </header>
 
-  <main class="container">
-    <div class="search-container">
-      <div class="search-box">
-        <input id="searchInput" type="text" placeholder="輸入漢字或部件">
-        <button onclick="search()">查詢</button>
-      </div>
-
-      <div id="resultContainer" class="result-card" style="display:none;">
-        <h2 id="char" class="main-char"></h2>
-        <div class="details">
-          <p><span class="label">拼音：</span> <span id="pinyin"></span></p>
-          <p><span class="label">釋義：</span> <span id="definition"></span></p>
-          <p><span class="label">部件拆分：</span> <span id="decomposition"></span></p>
-        </div>
-      </div>
-
-      <div id="componentsContainer" class="reverse-lookup" style="display:none;">
-        <h3>包含此部件的漢字</h3>
-        <div id="componentsList" class="char-grid"></div>
-      </div>
+  <!-- 搜尋 -->
+  <form class="card search-card" id="searchForm" autocomplete="off">
+    <div class="search-box">
+      <input id="searchInput" type="search" placeholder="輸入漢字或部件，如 好、氵" enterkeyhint="search" aria-label="輸入漢字或部件">
+      <button type="submit" class="btn-primary" id="searchBtn">🔍 查詢</button>
     </div>
-  </main>
+    <div class="status" id="status">⏳ 正在載入字典數據…</div>
+  </form>
 
-  <footer class="version-info">
-    版本: 純前端版
+  <!-- 單字結果 -->
+  <section class="card result-card" id="resultContainer" hidden>
+    <div class="main-char" id="char"></div>
+    <dl class="details">
+      <div><dt>拼音</dt><dd id="pinyin"></dd></div>
+      <div><dt>釋義</dt><dd id="definition"></dd></div>
+      <div><dt>部件</dt><dd id="decomposition"></dd></div>
+    </dl>
+  </section>
+
+  <!-- 反向部件查詢 -->
+  <section class="card" id="componentsContainer" hidden>
+    <div class="section-label">🧩 包含此部件的漢字 <span id="componentsCount"></span></div>
+    <div id="componentsList" class="char-grid"></div>
+  </section>
+
+  <footer>
+    數據來源：<a href="https://cc-cedict.org/wiki/">CC-CEDICT</a>（CC BY-SA 3.0）·
+    <a href="https://github.com/skishore/makemeahanzi">Make Me a Hanzi</a> ·
+    <a href="https://github.com/cjkvi/cjkvi-ids">CHISE IDS</a>
   </footer>
-
-  <script src="app.js"></script>
 </body>
 </html>

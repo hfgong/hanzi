@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <!-- 「漢」字形取自 Noto Sans TC（SIL Open Font License 1.1），转为矢量路径，不依赖字体 -->
+  <defs>
+    <!-- 主背景：与 Mobile LaTeX / AirCopy / 农历 同系的蓝紫渐变 -->
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4338ca" />
+      <stop offset="45%" stop-color="#2563eb" />
+      <stop offset="100%" stop-color="#0284c7" />
+    </linearGradient>
+    <radialGradient id="innerGlow" cx="28%" cy="22%" r="75%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.32" />
+      <stop offset="50%" stop-color="#ffffff" stop-opacity="0" />
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.25" />
+    </radialGradient>
+    <!-- 字身：白到浅蓝 -->
+    <linearGradient id="bodyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#bae6fd" />
+    </linearGradient>
+    <!-- 部件「氵」：亮青色，表示部件拆分 -->
+    <linearGradient id="radGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#67e8f9" />
+      <stop offset="100%" stop-color="#38bdf8" />
+    </linearGradient>
+    <linearGradient id="sparkleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#c084fc" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#090d16" flood-opacity="0.45" />
+    </filter>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="5" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <rect width="512" height="512" rx="118" fill="url(#bgGradient)" />
+  <rect width="512" height="512" rx="118" fill="url(#innerGlow)" />
+  <!-- 高光外描边 -->
+  <rect x="2" y="2" width="508" height="508" rx="116" fill="none" stroke="#ffffff" stroke-width="4" stroke-opacity="0.25" />
+
+  <g filter="url(#shadow)" transform="translate(262 256) scale(0.335 -0.335) translate(-499 -379)">
+    <!-- 部件「氵」略向左上错开，示意拆分 -->
+    <path transform="translate(-70 30)" d="M88 758 171 834Q195 815 224.5 792.0Q254 769 281.0 746.0Q308 723 325 704L237 617Q222 637 196.0 661.5Q170 686 141.5 711.5Q113 737 88 758ZM33 486 108 569Q135 553 167.0 532.5Q199 512 228.0 490.5Q257 469 276 452L197 360Q180 378 151.5 400.0Q123 422 91.5 444.5Q60 467 33 486ZM64 9Q87 46 114.0 96.5Q141 147 169.0 204.5Q197 262 221 319L320 242Q299 190 275.0 137.0Q251 84 226.5 32.5Q202 -19 177 -68Z" fill="url(#radGrad)" />
+    <path d="M315 800H946V700H315ZM299 179H965V82H299ZM461 471V431H791V471ZM342 554H917V346H342ZM339 312H930V215H339ZM562 601H688V271Q688 222 678.5 176.5Q669 131 647.5 90.0Q626 49 587.5 14.5Q549 -20 492.5 -48.0Q436 -76 358 -95Q350 -81 337.5 -62.5Q325 -44 310.5 -25.0Q296 -6 282 6Q355 18 404.5 38.0Q454 58 485.5 84.0Q517 110 533.5 140.0Q550 170 556.0 203.5Q562 237 562 272ZM418 853H545V664H706V853H840V581H418ZM644 7 702 94Q743 84 792.0 68.0Q841 52 887.0 35.5Q933 19 963 4L903 -94Q875 -78 830.0 -59.5Q785 -41 736.0 -23.5Q687 -6 644 7Z" fill="url(#bodyGrad)" />
+  </g>
+
+  <!-- 星芒 ✦ -->
+  <path d="M 432 372 Q 432 404, 400 404 Q 432 404, 432 436 Q 432 404, 464 404 Q 432 404, 432 372 Z"
+        fill="url(#sparkleGrad)" filter="url(#glow)" />
+  <circle cx="470" cy="362" r="6" fill="#67e8f9" />
+</svg>

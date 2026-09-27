@@ -16,6 +16,10 @@ git clone <你的倉庫地址>
 cd hanzi
 ```
 
+## 圖標
+
+`icon.svg` 為本項目原創（與 Mobile LaTeX、AirCopy、農曆同系列風格）；其中「漢」字形取自 Noto Sans TC（SIL Open Font License 1.1）並轉為矢量路徑。PNG 圖標由其導出。
+
 ## 數據說明
 
 完整數據位於 `public/data/` 目錄，格式為預處理好的 JSON，可自行更新。
