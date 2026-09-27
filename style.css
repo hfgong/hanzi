@@ -233,3 +233,9 @@ footer {
   padding: 6px 0 4px;
 }
 footer a { color: inherit; }
+
+/* Readings and senses */
+.reading + .reading { margin-top: 8px; }
+.reading-pinyin { font-weight: 700; color: var(--primary-text); }
+.reading ol { padding-left: 1.4em; }
+.reading li::marker { color: var(--text-secondary); font-size: 0.85em; }

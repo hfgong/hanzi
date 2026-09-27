@@ -4,9 +4,10 @@ import urllib.request
 import zipfile
 import tarfile
 import subprocess
+import sys
 
 # 创建数据目录
-data_dir = "data"
+data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 os.makedirs(data_dir, exist_ok=True)
 
 # 下载函数
@@ -42,6 +43,6 @@ if not os.path.exists(ids_file):
 
 # 运行整合脚本
 print("開始整合數據...")
-subprocess.run(["python", "prepare_data.py"])
+subprocess.run([sys.executable, os.path.join(os.path.dirname(os.path.abspath(__file__)), "prepare_data.py")], check=True)
 
 print("全部更新完成 ✅")

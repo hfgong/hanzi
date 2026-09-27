@@ -4,8 +4,9 @@
 
 ## 功能
 - 同時支持簡體與繁體輸入，查詢結果會列出對應的轉換形式
-- 顯示拼音、釋義、部件拆分
+- 顯示拼音（聲調符號）、全部讀音與釋義、部件拆分（可點擊）
 - 反向部件查詢
+- 離線可用（PWA，可添加到主屏幕）
 
 ## 安裝與啟動
 
@@ -22,11 +23,18 @@ cd hanzi
 
 ## 數據說明
 
-完整數據位於 `public/data/` 目錄，格式為預處理好的 JSON，可自行更新。
+數據位於 `data/` 目錄，為預處理好的緊凑 JSON；各文件的來源與授權見 [`data/README.md`](data/README.md)。
+
+- 單字、部件、繁簡對照約 0.5 MB（gzip），打開即可查詢
+- 多字詞語約 3.7 MB（gzip），在後台載入
 
 ## 預處理腳本
 
-`preprocess/prepare_data.py` 可用於整理與更新數據源。
+```bash
+cd preprocess
+python3 update_all.py      # 下載缺少的原始數據並重新生成 data/*.json
+python3 prepare_data.py    # 只用現有原始數據重新生成
+```
 
 ## 通过GitHub Pages访问
 
