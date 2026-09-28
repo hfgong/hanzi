@@ -19,12 +19,46 @@ function setStatus(text, isError = false) {
   $('status').classList.toggle('error', isError);
 }
 
+// Navigation: every lookup is a history entry (?q=…), so the header's back button,
+// the browser/phone back gesture and the home button all move between lookups.
+const currentQuery = () => new URLSearchParams(location.search).get('q') || '';
+
+function navigate(query) {
+  query = query.trim();
+  if (query === currentQuery()) {
+    show(query);
+    return;
+  }
+  const url = query ? `?q=${encodeURIComponent(query)}` : location.pathname;
+  history.pushState({ depth: (history.state?.depth || 0) + 1 }, '', url);
+  show(query);
+}
+
+function show(query) {
+  $('searchInput').value = query;
+  search();
+  const depth = history.state?.depth || 0;
+  $('backBtn').hidden = depth === 0;
+  $('homeBtn').hidden = !query;
+  window.scrollTo({ top: 0 });
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
+  history.replaceState({ depth: history.state?.depth || 0 }, '');
   $('searchForm').addEventListener('submit', e => {
     e.preventDefault();
-    search();
+    $('searchInput').blur(); // close the on-screen keyboard
+    navigate($('searchInput').value);
   });
+  // The clear (✕) button of the search field returns to the home screen.
+  $('searchInput').addEventListener('search', () => {
+    if (!$('searchInput').value) navigate('');
+  });
+  $('backBtn').addEventListener('click', () => history.back());
+  $('homeBtn').addEventListener('click', () => navigate(''));
+  window.addEventListener('popstate', () => show(currentQuery()));
 
+  $('searchInput').value = currentQuery();
   $('searchBtn').disabled = true;
   try {
     [chars, decomp, t2sMap, s2tMap] = await Promise.all(
@@ -37,7 +71,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     $('searchBtn').disabled = false;
   }
   setStatus('');
-  if ($('searchInput').value.trim()) search();
+  renderRadicals();
+  show(currentQuery());
 
   try {
     words = await loadJson('data/words.json');
@@ -46,8 +81,54 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.warn('詞語數據載入失敗', err);
   }
   // Re-run a word search that was waiting for the word list.
-  if (Array.from(tradToSimp($('searchInput').value.trim())).length > 1) search();
+  if (Array.from(tradToSimp(currentQuery())).length > 1) search();
 });
+
+// Radicals are hard to type with an input method, so the home screen lists them.
+// COMMON: frequent radical forms that input methods rarely offer.
+const COMMON_RADICALS = '亻氵扌忄艹讠钅纟饣辶阝刂冫犭礻衤宀冖疒广灬攵⺮⺼罒覀彳尸廴卩丬爫耂亠厂囗勹匚彡夂';
+// All 214 Kangxi radicals by stroke count, plus common variant forms (亻, 氵, 讠 …) in their stroke group.
+const RADICALS_BY_STROKE = {
+  1: '一丨丶丿乙亅',
+  2: '二亠人儿入八冂冖冫几凵刀力勹匕匚匸十卜卩厂厶又亻刂讠⺈⺊',
+  3: '口囗土士夂夊夕大女子宀寸小尢尸屮山巛工己巾干幺广廴廾弋弓彐彡彳氵扌忄犭艹辶纟饣丬⺌',
+  4: '心戈戶手支攴文斗斤方无日曰月木欠止歹殳毋比毛氏气水火爪父爻爿片牙牛犬灬爫攵礻⺼耂',
+  5: '玄玉瓜瓦甘生用田疋疒癶白皮皿目矛矢石示禸禾穴立衤钅罒',
+  6: '竹米糸缶网羊羽老而耒耳聿肉臣自至臼舌舛舟艮色艸虍虫血行衣襾覀⺮糹',
+  7: '見角言谷豆豕豸貝赤走足身車辛辰辵邑酉釆里',
+  8: '金長門阜隶隹雨靑非釒',
+  9: '面革韋韭音頁風飛食首香飠',
+  10: '馬骨高髟鬥鬯鬲鬼魚鳥',
+  11: '鹵鹿麥麻',
+  12: '黃黍黑黹',
+  13: '黽鼎鼓鼠',
+  14: '鼻齊',
+  15: '齒',
+  16: '龍龜',
+  17: '龠'
+};
+
+function renderRadicals() {
+  // Only list radicals that occur as a component, so every chip leads to results.
+  const used = new Set();
+  for (const ids of Object.values(decomp)) for (const ch of ids) used.add(ch);
+  const chips = str => Array.from(new Set(str)).filter(r => used.has(r)).map(charChip);
+
+  $('commonRadicals').replaceChildren(...chips(COMMON_RADICALS));
+  $('radicalsByStroke').replaceChildren(...Object.entries(RADICALS_BY_STROKE).flatMap(([strokes, radicals]) => {
+    const items = chips(radicals);
+    if (!items.length) return [];
+    const group = document.createElement('div');
+    group.className = 'stroke-group';
+    const label = document.createElement('span');
+    label.textContent = `${strokes} 畫`;
+    const grid = document.createElement('div');
+    grid.className = 'char-grid';
+    grid.replaceChildren(...items);
+    group.append(label, grid);
+    return [group];
+  }));
+}
 
 // CC-CEDICT numbered pinyin ("hao3", "nu:3", "Shi2") -> tone marks ("hǎo", "nǚ", "Shí").
 const TONE_MARKS = {
@@ -74,11 +155,7 @@ const pinyinToMarks = pinyin => pinyin.split(' ').map(syllableToMarks).join(' ')
 // Also convert pinyin inside definitions, e.g. "old variant of 汝[ru3]".
 const convertBracketPinyin = text => text.replace(/\[([A-Za-z:1-5 ]+)\]/g, (_, p) => `[${pinyinToMarks(p)}]`);
 
-function lookup(ch) {
-  $('searchInput').value = ch;
-  search();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
+const lookup = ch => navigate(ch);
 
 function charChip(ch) {
   const span = document.createElement('span');
@@ -145,6 +222,7 @@ function search() {
   const query = $('searchInput').value.trim();
   const simplifiedQuery = tradToSimp(query);
   setStatus('');
+  $('radicalsContainer').hidden = !!simplifiedQuery;
   if (!simplifiedQuery) {
     $('resultContainer').hidden = true;
     $('componentsContainer').hidden = true;

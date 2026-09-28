@@ -1,7 +1,7 @@
 // Network-first: when online every load gets the latest files (so a normal refresh
 // picks up new deploys); the cache is the fallback for offline use.
 // The app shell and core data are precached; data/words.json is cached the first time the page loads it.
-const CACHE_NAME = 'hanzi-v1';
+const CACHE_NAME = 'hanzi-v2';
 const urlsToCache = [
   './',
   './index.html',
